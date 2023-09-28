@@ -4,29 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Desconto {
-    private List<Double> descontos;
+    private List<DescontoItem> descontos;
 
-    public Desconto(List<Double> descontos) {
+    public Desconto() {
         descontos = new ArrayList<>();
     }
 
-    public void pegarINSS() {
-        descontos.add(0.11);
+    public boolean adicionarDesconto(DescontoItem descontoItem){
+        if(!descontos.contains(descontoItem)){
+            descontos.add(descontoItem);
+            return true;
+        }
+        return false;
     }
 
-    public void pegarIR() {
-        descontos.add(0.15);
+    public boolean removerDesconto(DescontoItem descontoItem){
+        if(descontos.contains(descontoItem)){
+            descontos.remove(descontoItem);
+            return true;
+        }
+        return false;
     }
 
     public double calcularDescontos(double salario) {
-        pegarINSS();
-        pegarIR();
-        double inss = descontos.get(0);
-        double ir = descontos.get(1);
-        double desconto = inss + ir;
-        salario += salario*desconto;
-        return salario;
+        double descontoTotal = 0;
+
+        for (DescontoItem descontoItem : descontos) {
+            descontoTotal += descontoItem.getValorPerc();
+        }
+
+        double desconto = salario * descontoTotal;
+
+        return desconto;
     }
-
-
 }

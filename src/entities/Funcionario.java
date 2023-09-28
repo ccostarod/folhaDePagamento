@@ -12,6 +12,7 @@ public class Funcionario {
     protected Beneficio beneficios;
     protected Desconto descontos;
 
+
     public Funcionario(String nome, String cpf, double salario, Departamento dep, Beneficio beneficios, Desconto descontos) {
         this.nome = nome;
         this.cpf = cpf;
@@ -21,16 +22,29 @@ public class Funcionario {
         this.descontos = descontos;
     }
 
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
     public double getSalario() {
         return salario;
     }
 
     public double calcularSalario(){
-        salario = descontos.calcularDescontos(salario);
+        double pagamento = salario;
+        pagamento -= descontos.calcularDescontos(salario);
         double beneficiosValor = beneficios.pegarBeneficios();
-        salario += beneficiosValor;
+        pagamento += beneficiosValor;
 
-        return salario;
+        return pagamento;
     }
 
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + '\n' +
+                "CPF: " + cpf + '\n' +
+                "Departamento: " + dep + '\n' +
+                "Salario Base: " + salario;
+    }
 }

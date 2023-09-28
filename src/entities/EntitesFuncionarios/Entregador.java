@@ -15,13 +15,22 @@ public class Entregador extends Funcionario {
 
     }
 
-    public double calcularSalario(){
-        salario = descontos.calcularDescontos(salario);
-        double beneficiosValor = beneficios.pegarBeneficios();
-        salario += beneficiosValor;
-        salario += salario*periculosidade;
-
-        return salario;
+    public void setPericulosidade(float periculosidade) {
+        this.periculosidade = periculosidade;
     }
+
+    public double calcularSalario(){
+        double pagamento = salario;
+        pagamento -= descontos.calcularDescontos(salario);
+        double beneficiosValor = beneficios.pegarBeneficios();
+        pagamento += beneficiosValor;
+        pagamento += pagamento*periculosidade;
+        return pagamento;
+    }
+
+    public String toString() {
+        return super.toString() + '\n' + "Bonus Adicional(Periculosidade): " + periculosidade;
+    }
+
 
 }

@@ -1,17 +1,35 @@
 package entities.entitiesExtras;
 
-public class Beneficio {
-    private double planoDeSaude;
-    private double valeTransporte;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Beneficio(double planoDeSaude, double valeTransporte) {
-        this.planoDeSaude = planoDeSaude;
-        this.valeTransporte = valeTransporte;
+public class Beneficio {
+    private List<BeneficioItem> beneficio;
+
+    public Beneficio() {
+        beneficio = new ArrayList<>();
     }
 
+    public boolean adicionarBeneficio(BeneficioItem beneficioItem){
+        if (!beneficio.contains(beneficioItem)){
+            beneficio.add(beneficioItem);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removerBeneficio(BeneficioItem beneficioItem){
+        if (beneficio.contains(beneficioItem)){
+            beneficio.remove(beneficioItem);
+            return true;
+        }
+        return false;
+    }
     public double pegarBeneficios(){
         double total = 0;
-        total = planoDeSaude + valeTransporte;
+        for (BeneficioItem beneficioItem : beneficio){
+            total += beneficioItem.getValor();
+        }
         return total;
     }
 

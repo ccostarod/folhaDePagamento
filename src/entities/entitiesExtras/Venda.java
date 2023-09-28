@@ -1,38 +1,32 @@
 package entities.entitiesExtras;
 
-import entities.EntitesFuncionarios.Vendedor;
-import entities.Funcionario;
+import entities.EntitesFuncionarios.Vendedor; // Importe a classe Vendedor
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Venda {
     private LocalDate data;
     private double valor;
-    private List<Venda> vendas;
-    private Vendedor vendedor;
+    private Vendedor vendedor; // Adicione uma referência ao vendedor responsável pela venda
+    private boolean status;
 
-    public Venda(LocalDate data, double valor, Vendedor vendedor) {
-        this.data = data;
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public Venda(int data, double valor, Vendedor vendedor) {
+        this.data = LocalDate.ofEpochDay(data);
         this.valor = valor;
-        this.vendedor = vendedor;
+        this.vendedor = vendedor; // Associe a venda ao vendedor
+        this.status = true;
     }
 
-    public void adicionarVenda(Venda venda){
-        vendas.add(venda);
+    public double pegarComissao() {
+        // Use o vendedor associado para obter a taxa de comissão
+        return vendedor.getTaxaComissao() * valor;
     }
-
-    public double pegarComissao(){
-        double valorVenda = 0;
-        double comissao = 0;
-        for (Venda a : vendas){
-            valorVenda = a.valor;
-            comissao += vendedor.getTaxaComissao() * valorVenda;
-            valorVenda = 0;
-        }
-        return comissao;
-    }
-
-
-
 }
