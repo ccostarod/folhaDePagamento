@@ -30,7 +30,8 @@ public class Main {
             System.out.println("5. Ajustar Desconto");
             System.out.println("6. Ajustar Beneficio");
             System.out.println("7. Ajustar Salario Base");
-            System.out.println("8. Sair");
+            System.out.println("8. Registro de Vendas");
+            System.out.println("9. Sair");
             System.out.print("Escolha uma opção: ");
 
             escolha = sc.nextInt();
@@ -86,21 +87,23 @@ public class Main {
                             int quantVendas = sc.nextInt();
                             sc.nextLine();
                             int i = 0;
-                            while (i < quantVendas){
-                                System.out.print("Data da venda (yyyy-MM-dd): ");
-                                String dataString = sc.nextLine();
-                                LocalDate data = LocalDate.parse(dataString);
-                                System.out.print("Valor da venda: ");
-                                double valorVenda = sc.nextDouble();
-                                sc.nextLine();
-                                Venda venda = new Venda(data, valorVenda);
-                                if (vendedor.adicionarVenda(venda)){
-                                    System.out.println("Venda adicionada!");
+                            if (quantVendas!=0){
+                                while (i < quantVendas){
+                                    System.out.print("Data da venda (yyyy-MM-dd): ");
+                                    String dataString = sc.nextLine();
+                                    LocalDate data = LocalDate.parse(dataString);
+                                    System.out.print("Valor da venda: ");
+                                    double valorVenda = sc.nextDouble();
+                                    sc.nextLine();
+                                    Venda venda = new Venda(data, valorVenda);
+                                    if (vendedor.adicionarVenda(venda)){
+                                        System.out.println("Venda adicionada!");
+                                    }
+                                    else{
+                                        System.out.println("Essa venda ja havia sido adicionada por ele ou por outro vendedor");
+                                    }
+                                    i++;
                                 }
-                                else{
-                                    System.out.println("Essa venda ja havia sido adicionada por ele ou por outro vendedor");
-                                }
-                                i++;
                             }
                             System.out.println("Funcionario cadastrado com sucesso!");
                             break;
@@ -217,14 +220,43 @@ public class Main {
                         System.out.println("Nao existe Funcionario com esse Nome ou CPF!");
                         break;
                     }
-
                 case 8:
+                    System.out.print("Digite o nome ou CPF do Vendedor: ");
+                    String key = sc.nextLine();
+                    Funcionario vendedorProcurado = folhaDePagamento.buscarFuncionario(key);
+                    if (vendedorProcurado != null){
+                        if(vendedorProcurado instanceof Vendedor){
+                            System.out.print("Digite a quantidade de Vendas do mes do " + vendedorProcurado.getNome() +": ");
+                            int quantVendas = sc.nextInt();
+                            sc.nextLine();
+                            int i = 0;
+                            while(i < quantVendas){
+                                System.out.print("Data da venda (yyyy-MM-dd): ");
+                                String dataString = sc.nextLine();
+                                LocalDate data = LocalDate.parse(dataString);
+                                System.out.print("Valor da venda: ");
+                                double valorVenda = sc.nextDouble();
+                                sc.nextLine();
+                                Venda venda = new Venda(data, valorVenda);
+                                ((Vendedor) vendedorProcurado).adicionarVenda(venda);
+                                System.out.println("Venda adicionada!");
+                                i++;
+                            }
+                            break;
+                        }
+                    }
+                    else{
+                        System.out.println("Nao existe vendedor com esse Nome ou CPF");
+                        break;
+                    }
+                    break;
+                case 9:
                     System.out.println("Saindo...");
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                     break;
             }
-        } while (escolha != 8);
+        } while (escolha != 9);
     }
 }

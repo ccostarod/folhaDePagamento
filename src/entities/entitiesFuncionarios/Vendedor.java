@@ -12,7 +12,7 @@ public class Vendedor extends Funcionario {
     private float taxaComissao;
     private List<Venda> vendas;
 
-
+    private double comissao;
 
     public Vendedor(String nome, String cpf, double salario, Departamento dep, Beneficio
             beneficios, Desconto descontos, float taxaComissao) {
@@ -38,8 +38,8 @@ public class Vendedor extends Funcionario {
     public double pegarComissao(Venda venda) {
         return taxaComissao * venda.getValor();
     }
-    private double calcularComissao() {
-        double comissao = 0;
+    public double calcularComissao() {
+        comissao = 0;
         for (Venda venda : vendas) {
             comissao += pegarComissao(venda);
         }

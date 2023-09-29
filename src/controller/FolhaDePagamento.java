@@ -40,6 +40,7 @@ public class FolhaDePagamento {
     }
 
 
+
     public boolean ajustarValorAdicionalFuncionario(Funcionario funcionario, float adicional){
         if (funcionarios.contains(funcionario)){
             if(funcionario instanceof Entregador){
@@ -65,11 +66,17 @@ public class FolhaDePagamento {
     }
 
     public void realizarPagamento(){
-        for (Funcionario funcionario : funcionarios){
-            System.out.println(funcionario);
-            double pagamento = funcionario.calcularSalario();
-            System.out.printf("Salario Liquido: %.3f\n\n", pagamento);
+        if (funcionarios.size() == 0){
+            System.out.println("Nao ha funcionarios na folha");
         }
+        else{
+            for (Funcionario funcionario : funcionarios){
+                System.out.println(funcionario);
+                double pagamento = funcionario.calcularSalario();
+                System.out.printf("Salario Liquido: %.3f\n\n", pagamento);
+            }
+        }
+
     }
 
 }
