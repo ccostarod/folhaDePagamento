@@ -70,11 +70,14 @@ public class FolhaDePagamento {
             System.out.println("Nao ha funcionarios na folha");
         }
         else{
+            double somaPagamento = 0;
             for (Funcionario funcionario : funcionarios){
                 System.out.println(funcionario);
                 double pagamento = funcionario.calcularSalario();
-                System.out.printf("Salario Liquido: %.3f\n\n", pagamento);
+                somaPagamento += pagamento;
+                System.out.printf("Salario Liquido: %.3f\n", pagamento);
             }
+            System.out.printf("Todos os salarios dos funcionarios foram pagos, valor retirado da conta: %.2f%n", somaPagamento);
         }
 
     }

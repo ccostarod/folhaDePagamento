@@ -39,7 +39,7 @@ public class Vendedor extends Funcionario {
         return taxaComissao * venda.getValor();
     }
     public double calcularComissao() {
-        comissao = 0;
+        comissao = 0.0;
         for (Venda venda : vendas) {
             comissao += pegarComissao(venda);
         }
@@ -57,7 +57,7 @@ public class Vendedor extends Funcionario {
 
 
     public String toString() {
-        return super.toString() + '\n' + "Comissao: " + calcularComissao();
+        return super.toString() + '\n' + "Comissao: " + String.format("%.2f",calcularComissao());
     }
 
 
