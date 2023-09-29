@@ -16,4 +16,12 @@ public class BeneficioItem {
     public double getValor() {
         return valor;
     }
+
+    @Override
+    public String toString() {
+        return "BeneficioItem{" +
+                "name='" + name + '\'' +
+                ", valor=" + valor +
+                '}';
+    }
 }

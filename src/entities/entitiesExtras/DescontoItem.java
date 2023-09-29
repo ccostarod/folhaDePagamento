@@ -16,4 +16,12 @@ public class DescontoItem {
     public double getValorPerc() {
         return valorPerc;
     }
+
+    @Override
+    public String toString() {
+        return "DescontoItem{" +
+                "name='" + name + '\'' +
+                ", valorPerc=" + valorPerc +
+                '}';
+    }
 }

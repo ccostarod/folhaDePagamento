@@ -1,9 +1,11 @@
 package controller;
 
-import entities.EntitesFuncionarios.Administrador;
-import entities.EntitesFuncionarios.Entregador;
-import entities.EntitesFuncionarios.Vendedor;
-import entities.Funcionario;
+import entities.EntitiesFuncionarios.Administrador;
+import entities.EntitiesFuncionarios.Entregador;
+import entities.EntitiesFuncionarios.Vendedor;
+import entities.EntitiesFuncionarios.Funcionario;
+import entities.entitiesExtras.Beneficio;
+import entities.entitiesExtras.BeneficioItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,15 @@ public class FolhaDePagamento {
         }
         return false;
     }
+    public Funcionario buscarFuncionario(String key) {
+        for (Funcionario funcionario : funcionarios) {
+            if (funcionario.getNome().equalsIgnoreCase(key) || funcionario.getCpf().equals(key)) {
+                return funcionario;
+            }
+        }
+        return null; // Retorna null se não encontrar o funcionário
+    }
+
 
     public boolean ajustarValorAdicionalFuncionario(Funcionario funcionario, float adicional){
         if (funcionarios.contains(funcionario)){
@@ -47,7 +58,6 @@ public class FolhaDePagamento {
         }
         return false;
     }
-
     public boolean ajustarSalarioBase(Funcionario funcionario, double salario){
         if (funcionarios.contains(funcionario)){
             funcionario.setSalario(salario);

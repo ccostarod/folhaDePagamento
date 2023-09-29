@@ -1,49 +1,231 @@
 package applications;
 
 import controller.FolhaDePagamento;
-import entities.EntitesFuncionarios.Administrador;
-import entities.EntitesFuncionarios.Entregador;
-import entities.EntitesFuncionarios.Vendedor;
-import entities.Funcionario;
+import entities.EntitiesFuncionarios.Administrador;
+import entities.EntitiesFuncionarios.Entregador;
+import entities.EntitiesFuncionarios.Vendedor;
+import entities.EntitiesFuncionarios.Funcionario;
 import entities.entitiesExtras.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Beneficio beneficios =  new Beneficio();
+        beneficios.adicionarPadroes();
 
-        FolhaDePagamento folhaDePagamento = new FolhaDePagamento();
-        Beneficio beneficios = new Beneficio();
-        List<Venda> vendas = null;
-        BeneficioItem beneficio1 = new BeneficioItem("Plano de Saude", 500);
-        BeneficioItem beneficio2 = new BeneficioItem("Vale Transporte", 200);
-        DescontoItem desconto1 = new DescontoItem("INSS", 0.11);
-        DescontoItem desconto2 = new DescontoItem("IR", 0.15);
         Desconto descontos = new Desconto();
-        descontos.adicionarDesconto(desconto1);
-        descontos.adicionarDesconto(desconto2);
-        beneficios.adicionarBeneficio(beneficio1);
-        beneficios.adicionarBeneficio(beneficio2);
-        Funcionario administrador = new Administrador("Rodrigo", "616.926.863.80", 2800.0, new Departamento("Banco"), beneficios, descontos, 0.25f);
+        descontos.adicionarPadroes();
+        FolhaDePagamento folhaDePagamento = new FolhaDePagamento();
+        int escolha;
+        do {
+            System.out.println("\n*** Menu da Folha de Pagamento ***");
+            System.out.println("1. Cadastrar Funcionário");
+            System.out.println("2. Ajustar Valores de um funcionario (Bonus chefia, Bonus periculosidade, Taxa de Comissão)");
+            System.out.println("3. Remover Funcionário");
+            System.out.println("4. Realizar Pagamento");
+            System.out.println("5. Ajustar Desconto");
+            System.out.println("6. Ajustar Beneficio");
+            System.out.println("7. Ajustar Salario Base");
+            System.out.println("8. Sair");
+            System.out.print("Escolha uma opção: ");
 
-        Funcionario entregador = new Entregador("Ryan", "618.234.562.33", 1500.0, new Departamento("Entregas"), beneficios, descontos, 0.25f);
+            escolha = sc.nextInt();
+            sc.nextLine();
 
-        Vendedor vendedor = new Vendedor("Joao", "602.532.003.28", 2000.0, new Departamento("Comercial"), beneficios, descontos, 0.10f);
+            switch (escolha) {
+                case 1:
+                    String nome, cpf;
+                    double salario;
+                    String departamentoNome;
+                    System.out.print("Nome: ");
+                    nome = sc.nextLine();
+                    System.out.print("CPF: ");
+                    cpf = sc.nextLine();
+                    System.out.print("Salario: ");
+                    salario = sc.nextDouble();
+                    sc.nextLine();
+                    System.out.print("Departamento: ");
+                    departamentoNome = sc.nextLine();
+                    Departamento departamento = new Departamento(departamentoNome);
+                    System.out.println("Selecione o tipo de funcionário:");
+                    System.out.println("1. Administrador");
+                    System.out.println("2. Entregador");
+                    System.out.println("3. Vendedor");
+                    System.out.print("Escolha: ");
+                    int tipo = sc.nextInt();
+                    sc.nextLine();
+                    System.out.println();
+                    switch (tipo){
+                        case 1:
+                            System.out.print("Bonus de chefia (Em decimal): ");
+                            float bonusChefia = sc.nextFloat();
+                            sc.nextLine();
+                            Administrador administrador = new Administrador(nome, cpf, salario, departamento, beneficios, descontos, bonusChefia);
+                            folhaDePagamento.cadastrarFuncionario(administrador);
+                            System.out.println("Funcionario cadastrado com sucesso!");
+                            break;
+                        case 2:
+                            System.out.print("Bonus de periculosidade (Em decimal): ");
+                            float periculosidade = sc.nextFloat();
+                            sc.nextLine();
+                            Entregador entregador = new Entregador(nome, cpf, salario, departamento, beneficios, descontos, periculosidade);
+                            folhaDePagamento.cadastrarFuncionario(entregador);
+                            System.out.println("Funcionario cadastrado com sucesso!");
+                            break;
+                        case 3:
+                            System.out.print("Taxa de Comissão (Em decimal): ");
+                            float txComissao = sc.nextFloat();
+                            sc.nextLine();
+                            Vendedor vendedor = new Vendedor(nome, cpf, salario, departamento, beneficios, descontos, txComissao);
+                            folhaDePagamento.cadastrarFuncionario(vendedor);
+                            System.out.print("Registro de Vendas:\nQuantas vendas esse vendedor fez? ");
+                            int quantVendas = sc.nextInt();
+                            sc.nextLine();
+                            int i = 0;
+                            while (i < quantVendas){
+                                System.out.print("Data da venda (yyyy-MM-dd): ");
+                                String dataString = sc.nextLine();
+                                LocalDate data = LocalDate.parse(dataString);
+                                System.out.print("Valor da venda: ");
+                                double valorVenda = sc.nextDouble();
+                                sc.nextLine();
+                                Venda venda = new Venda(data, valorVenda);
+                                if (vendedor.adicionarVenda(venda)){
+                                    System.out.println("Venda adicionada!");
+                                }
+                                else{
+                                    System.out.println("Essa venda ja havia sido adicionada por ele ou por outro vendedor");
+                                }
+                                i++;
+                            }
+                            System.out.println("Funcionario cadastrado com sucesso!");
+                            break;
+                        default:
+                            System.out.println("Escolha um tipo valido!");
+                            break;
+                    }
+                    break;
+                case 2:
+                    System.out.print("Digite o nome ou CPF do funcionario: ");
+                    String chave = sc.nextLine();
+                    System.out.print("Digite o ajuste (Em decimal): ");
+                    float ajuste = sc.nextFloat();
+                    sc.nextLine();
+                    Funcionario funcionario = folhaDePagamento.buscarFuncionario(chave);
+                    if (funcionario != null){
+                        folhaDePagamento.ajustarValorAdicionalFuncionario(funcionario, ajuste);
+                        System.out.println("Ajuste feito com sucesso!");
+                        break;
+                    }
+                    System.out.println("Nao existe Funcionario com esse Nome ou CPF!");
+                    break;
+                case 3:
+                    System.out.print("Digite o nome ou CPF do funcionario: ");
+                    chave = sc.nextLine();
+                    funcionario =  folhaDePagamento.buscarFuncionario(chave);
+                    if (funcionario != null){
+                        folhaDePagamento.removerFuncionario(funcionario);
+                        System.out.println("Funcionario removido com sucesso!");
+                        break;
+                    }
+                    System.out.println("Nao existe Funcionario com esse Nome ou CPF!");
+                    break;
+                case 4:
+                    folhaDePagamento.realizarPagamento();
+                    break;
+                case 5:
+                    System.out.println("Ajustar Descontos:\n1. Adicionar");
+                    System.out.println("2. Remover");
+                    System.out.print("Escolha: ");
+                    int addOuRemover = sc.nextInt();
+                    sc.nextLine();
+                    if (addOuRemover == 1){
+                        System.out.print("Nome do Desconto: ");
+                        String nomeDesconto = sc.nextLine();
+                        System.out.print("Valor percentual do Desconto: ");
+                        double valorPerc = sc.nextDouble();
+                        sc.nextLine();
+                        DescontoItem descontoItem = new DescontoItem(nomeDesconto, valorPerc);
+                        if(descontos.adicionarDesconto(descontoItem)){
+                            System.out.println("Desconto adicionado com Sucesso!");
+                            break;
+                        }
+                        else{
+                            System.out.println("Desconto ja esta na lista de Descontos");
+                            break;
+                        }
+                    }
+                    else if(addOuRemover == 2) {
+                        System.out.print("Digite o nome do Desconto: ");
+                        String nomeDesconto = sc.nextLine();
+                        descontos.removerDesconto(nomeDesconto);
+                        break;
+                    }
+                    else{
+                        System.out.println("Digite uma opção valida!");
+                        break;
+                    }
+                case 6:
+                    System.out.println("Ajustar Beneficios:\n1. Adicionar");
+                    System.out.println("2. Remover");
+                    System.out.print("Escolha: ");
+                    addOuRemover = sc.nextInt();
+                    sc.nextLine();
+                    if (addOuRemover == 1){
+                        System.out.print("Nome do Beneficio: ");
+                        String nomeBeneficio = sc.nextLine();
+                        System.out.print("Valor do Beneficio: ");
+                        double valor = sc.nextDouble();
+                        sc.nextLine();
+                        BeneficioItem beneficioItem = new BeneficioItem(nomeBeneficio, valor);
+                        if(beneficios.adicionarBeneficio(beneficioItem)){
+                            System.out.println("Beneficio adicionado com Sucesso!");
+                            break;
+                        }
+                        else{
+                            System.out.println("Desconto ja esta na lista de Descontos");
+                            break;
+                        }
+                    }
+                    else if(addOuRemover == 2) {
+                        System.out.print("Digite o nome do Beneficio: ");
+                        String nomeBeneficio = sc.nextLine();
+                        beneficios.removerBeneficio(nomeBeneficio);
+                        System.out.println("Beneficio removido com sucesso!");
+                        break;
+                    }
+                    else{
+                        System.out.println("Digite uma opção valida!");
+                        break;
+                    }
+                case 7:
+                    System.out.print("Digite o nome ou CPF do funcionario: ");
+                    String nomeOrCPF = sc.nextLine();
+                    System.out.println("Digite o ajuste de salario: ");
+                    double ajusteSalario = sc.nextDouble();
+                    sc.nextLine();
+                    Funcionario funcionarioProcurado = folhaDePagamento.buscarFuncionario(nomeOrCPF);
+                    if(funcionarioProcurado != null){
+                        folhaDePagamento.ajustarSalarioBase(funcionarioProcurado, ajusteSalario);
+                        break;
+                    }
+                    else{
+                        System.out.println("Nao existe Funcionario com esse Nome ou CPF!");
+                        break;
+                    }
 
-        vendedor.adicionarVenda(new Venda(2023-4-12,100, vendedor));
-        vendedor.adicionarVenda(new Venda(2023-4-13,200, vendedor));
-        vendedor.adicionarVenda(new Venda(2023-4-15,500, vendedor));
-
-        folhaDePagamento.cadastrarFuncionario(administrador);
-        folhaDePagamento.cadastrarFuncionario(entregador);
-        folhaDePagamento.cadastrarFuncionario(vendedor);
-
-        folhaDePagamento.realizarPagamento();
-        System.out.println("\n\n\n\n");
-        folhaDePagamento.removerFuncionario(entregador);
-
-        folhaDePagamento.realizarPagamento();
-        folhaDePagamento.realizarPagamento();
+                case 8:
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
+            }
+        } while (escolha != 8);
     }
 }

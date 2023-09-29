@@ -1,6 +1,5 @@
-package entities.EntitesFuncionarios;
+package entities.EntitiesFuncionarios;
 
-import entities.Funcionario;
 import entities.entitiesExtras.Beneficio;
 import entities.entitiesExtras.Departamento;
 import entities.entitiesExtras.Desconto;
@@ -19,15 +18,13 @@ public class Administrador extends Funcionario {
 
     public double calcularSalario(){
         double pagamento = salario;
-        pagamento -= descontos.calcularDescontos(salario);
-        double beneficiosValor = beneficios.pegarBeneficios();
-        pagamento += beneficiosValor;
+        pagamento += beneficios.calcularBeneficios();
         pagamento += pagamento*bonusChefia;
-
+        pagamento -= descontos.calcularDescontos(pagamento);
         return pagamento;
     }
     public String toString() {
-        return super.toString() + '\n' + "Bonus Adicional: " + bonusChefia;
+        return super.toString() + '\n' + "Bonus Adicional: " + bonusChefia*100 + '%';
     }
 
 }
