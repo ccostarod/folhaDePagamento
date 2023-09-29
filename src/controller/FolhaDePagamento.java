@@ -1,11 +1,9 @@
 package controller;
 
-import entities.EntitiesFuncionarios.Administrador;
-import entities.EntitiesFuncionarios.Entregador;
-import entities.EntitiesFuncionarios.Vendedor;
-import entities.EntitiesFuncionarios.Funcionario;
-import entities.entitiesExtras.Beneficio;
-import entities.entitiesExtras.BeneficioItem;
+import entities.entitiesFuncionarios.Administrador;
+import entities.entitiesFuncionarios.Entregador;
+import entities.entitiesFuncionarios.Vendedor;
+import entities.entitiesFuncionarios.Funcionario;
 
 import java.util.ArrayList;
 import java.util.List;

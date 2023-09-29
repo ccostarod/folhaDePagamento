@@ -1,4 +1,4 @@
-package entities.EntitiesFuncionarios;
+package entities.entitiesFuncionarios;
 
 import entities.entitiesExtras.Beneficio;
 import entities.entitiesExtras.Departamento;

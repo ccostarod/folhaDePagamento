@@ -1,13 +1,12 @@
 package applications;
 
 import controller.FolhaDePagamento;
-import entities.EntitiesFuncionarios.Administrador;
-import entities.EntitiesFuncionarios.Entregador;
-import entities.EntitiesFuncionarios.Vendedor;
-import entities.EntitiesFuncionarios.Funcionario;
+import entities.entitiesFuncionarios.Administrador;
+import entities.entitiesFuncionarios.Entregador;
+import entities.entitiesFuncionarios.Vendedor;
+import entities.entitiesFuncionarios.Funcionario;
 import entities.entitiesExtras.*;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.Scanner;
 
